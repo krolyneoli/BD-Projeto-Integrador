@@ -4,6 +4,7 @@ CREATE TABLE adm.pagamento (
     forma adm.forma_pagamento_enum NOT NULL,
     stts adm.stts_pagamento_enum NOT NULL DEFAULT 'aguardando pagamento',
     valor DECIMAL(15,2) NOT NULL,
+    data_pagamento TIMESTAMPTZ,
 
     CONSTRAINT fk_pagamento_venda
         FOREIGN KEY (id_venda)
