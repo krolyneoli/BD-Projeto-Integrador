@@ -1,0 +1,4 @@
+CREATE TABLE adm.categoria (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(80) NOT NULL UNIQUE
+);
