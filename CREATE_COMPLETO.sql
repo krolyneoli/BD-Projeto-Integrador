@@ -83,7 +83,7 @@ CREATE TABLE site.endereco (
 
     -- ALTERADO:
     -- era INTEGER; agora permite valores como "120-A" e "S/N"
-    numero VARCHAR(20) NOT NULL,
+    numero VARCHAR(100) NOT NULL,
 
     bairro VARCHAR(100) NOT NULL,
     cidade VARCHAR(100) NOT NULL,
