@@ -84,14 +84,12 @@ CREATE TABLE site.endereco (
     -- ALTERADO:
     -- era INTEGER; agora permite valores como "120-A" e "S/N"
     numero VARCHAR(100) NOT NULL,
-
     bairro VARCHAR(100) NOT NULL,
     cidade VARCHAR(100) NOT NULL,
 
     -- ALTERADO:
     -- guarda apenas a sigla, como MG, RJ, SP
     estado CHAR(2) NOT NULL,
-
     cep VARCHAR(9) NOT NULL,
     complemento VARCHAR(100)
 );
@@ -282,8 +280,7 @@ CREATE TABLE site.carrinho (
     id_cupom INTEGER,
 
     -- ALTERADO:
-    -- removemos "total".
-    -- O total do carrinho será calculado a partir dos itens.
+    -- removemos "total". O total do carrinho será calculado a partir dos itens.
 
     CONSTRAINT fk_carrinho_usuario
         FOREIGN KEY (id_usuario)
@@ -299,33 +296,28 @@ CREATE TABLE site.carrinho (
 -- ITEM DO CARRINHO
 -- =========================================================
 
--- ALTERADO:
--- antes: site.item
--- agora: site.item_carrinho
-
-CREATE TABLE site.item_carrinho (
+CREATE TABLE site.item (
     id SERIAL PRIMARY KEY,
     id_carrinho INTEGER NOT NULL,
     id_produto INTEGER NOT NULL,
     quant INTEGER NOT NULL,
 
     -- ALTERADO:
-    -- removemos "total".
-    -- O valor é calculado usando quantidade x preço do produto.
+    -- removemos "total". O valor é calculado usando quantidade x preço do produto.
 
     CONSTRAINT fk_item_carrinho
         FOREIGN KEY (id_carrinho)
         REFERENCES site.carrinho(id)
         ON DELETE CASCADE,
 
-    CONSTRAINT fk_item_carrinho_produto
+    CONSTRAINT fk_item_produto
         FOREIGN KEY (id_produto)
         REFERENCES adm.produto(id),
 
-    CONSTRAINT ck_item_carrinho_quant
+    CONSTRAINT ck_item_quant
         CHECK (quant > 0),
 
-    CONSTRAINT uk_item_carrinho_produto
+    CONSTRAINT uk_item_produto
         UNIQUE (id_carrinho, id_produto)
 );
 
@@ -345,12 +337,8 @@ CREATE TABLE adm.venda (
     -- AQUI O TOTAL CONTINUA.
     -- A venda é um registro histórico já concluído.
     total DECIMAL(15,2) NOT NULL,
-
-    stts_pagamento adm.stts_pagamento_venda_enum
-        NOT NULL DEFAULT 'aguardando pagamento',
-
+    stts_pagamento adm.stts_pagamento_venda_enum NOT NULL DEFAULT 'aguardando pagamento',
     stts adm.stts_venda_enum NOT NULL,
-
     criado_em TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT fk_venda_usuario
@@ -376,7 +364,7 @@ CREATE TABLE adm.venda (
 
 
 -- =========================================================
--- ITEM DA VENDA
+-- ITENS DA VENDA
 -- =========================================================
 
 CREATE TABLE adm.item_venda (
@@ -387,8 +375,7 @@ CREATE TABLE adm.item_venda (
     preco_unitario DECIMAL(15,2) NOT NULL,
 
     -- O TOTAL CONTINUA AQUI.
-    -- Diferente do carrinho, a venda precisa preservar
-    -- os valores históricos daquele momento.
+    -- Diferente do carrinho, a venda precisa preservar os valores históricos daquele momento.
     total DECIMAL(15,2) NOT NULL,
 
     CONSTRAINT fk_item_venda_venda
@@ -422,15 +409,11 @@ CREATE TABLE adm.pagamento (
     id SERIAL PRIMARY KEY,
     id_venda INTEGER NOT NULL UNIQUE,
     forma adm.forma_pagamento_enum NOT NULL,
-
-    stts adm.stts_pagamento_enum
-        NOT NULL DEFAULT 'aguardando pagamento',
-
+    stts adm.stts_pagamento_enum NOT NULL DEFAULT 'aguardando pagamento',
     valor DECIMAL(15,2) NOT NULL,
 
     -- NOVO:
-    -- registra quando o pagamento efetivamente aconteceu.
-    -- Pode ser NULL enquanto estiver aguardando.
+    -- registra quando o pagamento efetivamente aconteceu. Pode ser NULL enquanto estiver aguardando.
     data_pagamento TIMESTAMPTZ,
 
     CONSTRAINT fk_pagamento_venda
@@ -445,8 +428,6 @@ CREATE TABLE adm.pagamento (
 -- =========================================================
 -- NOTA FISCAL
 -- =========================================================
-
--- MANTIDA como estava no código original.
 
 CREATE TABLE adm.nota_fiscal (
     id SERIAL PRIMARY KEY,
@@ -470,30 +451,22 @@ CREATE TABLE adm.nota_fiscal (
 
 CREATE TABLE adm.entrega (
     id SERIAL PRIMARY KEY,
-
-    stts adm.stts_entrega_enum
-        NOT NULL DEFAULT 'aguardando envio',
-
-    criado_em TIMESTAMPTZ
-        NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
+    stts adm.stts_entrega_enum NOT NULL DEFAULT 'aguardando envio',
+    criado_em TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     data_hora_previsao_entrega TIMESTAMPTZ NOT NULL,
     data_hora_entrega TIMESTAMPTZ,
-
     id_venda INTEGER NOT NULL UNIQUE,
-
-    -- NOVO:
-    -- em vez de repetir rua, número, bairro, cidade etc.,
-    -- a entrega referencia um endereço já cadastrado.
-    id_endereco INTEGER NOT NULL,
+	rua VARCHAR(100) NOT NULL,
+    numero VARCHAR(100) NOT NULL,
+    bairro VARCHAR(100) NOT NULL,
+    cidade VARCHAR(100) NOT NULL,
+	estado VARCHAR(100) NOT NULL,
+    cep VARCHAR(9) NOT NULL,
+    complemento VARCHAR(100),
 
     CONSTRAINT fk_entrega_venda
         FOREIGN KEY (id_venda)
         REFERENCES adm.venda(id),
-
-    CONSTRAINT fk_entrega_endereco
-        FOREIGN KEY (id_endereco)
-        REFERENCES site.endereco(id),
 
     CONSTRAINT ck_entrega_data_hora_entrega
         CHECK (
@@ -512,9 +485,7 @@ CREATE TABLE contabil.plano_contas (
     codigo VARCHAR(40) NOT NULL,
     nome_conta VARCHAR(255) NOT NULL,
     tipo_conta contabil.tipo_conta_enum NOT NULL,
-
-    natureza_conta contabil.natureza_conta_enum
-        NOT NULL DEFAULT 'devedora',
+    natureza_conta contabil.natureza_conta_enum NOT NULL DEFAULT 'devedora',
 
     CONSTRAINT pk_plano_contas
         PRIMARY KEY (id)
@@ -545,8 +516,7 @@ CREATE TABLE contabil.lancamentos (
         PRIMARY KEY (id),
 
     -- NOVA FK:
-    -- permite descobrir qual pagamento originou
-    -- determinado lançamento contábil.
+    -- permite descobrir qual pagamento originou determinado lançamento contábil.
     CONSTRAINT fk_lancamento_pagamento
         FOREIGN KEY (id_pagamento)
         REFERENCES adm.pagamento(id),
@@ -561,4 +531,26 @@ CREATE TABLE contabil.lancamentos (
 
     CONSTRAINT ck_lancamento_valor
         CHECK (valor > 0)
+);
+
+-- =========================================================
+-- CUPONS DO USUÁRIO
+-- =========================================================
+
+CREATE TABLE adm.usuario_cupom (
+    id SERIAL PRIMARY KEY,
+    usuario_id INTEGER NOT NULL,
+    cupom_id INTEGER NOT NULL,
+    utilizado_em TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_usuario_cupom_usuario
+        FOREIGN KEY (usuario_id)
+        REFERENCES site.usuario(id),
+
+    CONSTRAINT fk_usuario_cupom_cupom
+        FOREIGN KEY (cupom_id)
+        REFERENCES adm.cupom(id),
+
+    CONSTRAINT uk_usuario_cupom
+        UNIQUE (usuario_id, cupom_id)
 );

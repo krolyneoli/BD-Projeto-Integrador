@@ -7,3 +7,4 @@ INSERT INTO adm.produto (nome, descricao, preco, id_categoria, preco_promocional
     ('Café Expresso', 'Café expresso tradicional', 6.00, 6, NULL, TRUE),
     ('Torta de Limão', 'Torta de limão com merengue', 45.00, 7, 39.90, TRUE),
     ('Cookie de Chocolate', 'Cookie artesanal com gotas de chocolate', 7.50, 8, NULL, FALSE);
+    

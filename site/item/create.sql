@@ -16,6 +16,6 @@ CREATE TABLE site.item (
     CONSTRAINT ck_item_quant
         CHECK (quant > 0),
 
-    CONSTRAINT uk_item_carrinho_produto
+    CONSTRAINT uk_item_produto
         UNIQUE (id_carrinho, id_produto)
 );

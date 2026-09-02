@@ -10,15 +10,13 @@ O objetivo deste banco de dados é fornecer uma estrutura relacional capaz de su
 
 ## Escopo do sistema
 
-A solução foi organizada em dois schemas, cada um responsável por um conjunto específico de informações:
+A solução foi organizada em três schemas, cada um responsável por um conjunto específico de informações:
 
 - `site`: dados relacionados ao cliente e às funcionalidades de navegação e compra.
 - `adm`: dados operacionais e comerciais do ecommerce.
-
-Outro schema relevante foi o fornecido pelo professor da disciplina:
 - `contabil`: estrutura destinada ao controle contábil e aos lançamentos financeiros.
 
-O script principal do projeto está concentrado em `CREATE_COMPLETO.sql`, que reúne a definição dos schemas, enums, tabelas, chaves primárias, chaves estrangeiras e demais restrições.
+O script principal do projeto está concentrado em `CREATE_COMPLETO.sql`, que reúne a definição dos schemas, enums, tabelas, chaves primárias, chaves estrangeiras e demais restrições. Juntamente do `INSERT_COMPLETO.sql` que faz todas as devidas inserções nas tabelas criadas.
 
 ## Organização lógica do banco
 
@@ -50,7 +48,7 @@ O schema `adm` concentra as entidades responsáveis pela operação comercial.
 
 ### Schema `contabil`
 
-O schema `contabil` contempla o arquivo .sql do trabalho 1 entregue pelo professor.
+O schema `contabil` contempla o arquivo .sql do trabalho 1 entregue pelo professor adaptado para o nosso projeto integrador.
 
 - `plano_contas`: estrutura de classificação contábil.
 - `lancamentos`: registros de débitos e créditos.
@@ -102,6 +100,7 @@ O script foi desenvolvido para **PostgreSQL**, utilizando recursos como schemas,
 ## Estrutura dos arquivos
 
 - `CREATE_COMPLETO.sql`: script de criação consolidado do banco de dados.
+- `INSERT_COMPLETO.sql`: script de inserção das tabelas do banco de dados.
 - `SCHEMAS.sql`: criação isolada dos schemas.
 - `adm/`: scripts do módulo administrativo.
 - `site/`: scripts do módulo do site e do cliente.

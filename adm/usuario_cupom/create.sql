@@ -1,7 +1,7 @@
-CREATE TABLE site.usuario_cupom (
+CREATE TABLE adm.usuario_cupom (
     id SERIAL PRIMARY KEY,
-    usuario_id INT NOT NULL,
-    cupom_id INT NOT NULL,
+    usuario_id INTEGER NOT NULL,
+    cupom_id INTEGER NOT NULL,
     utilizado_em TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT fk_usuario_cupom_usuario

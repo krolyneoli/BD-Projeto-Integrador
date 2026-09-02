@@ -1,4 +1,4 @@
-INSERT INTO site.usuario_cupom (usuario_id, cupom_id)
+INSERT INTO adm.usuario_cupom (usuario_id, cupom_id)
 VALUES
     (1, 1), -- Maria → BEMVINDO10
     (2, 2), -- João → FRETEGRATIS
