@@ -115,20 +115,239 @@ INSERT INTO adm.nota_fiscal (numero_nota, valor, id_venda) VALUES
     ('000000004', 92.00,  4),
     ('000000005', 315.00, 5);
 
+    -- Pagamento 4 → Caixa/Banco (débito) → Receita de Vendas (crédito)
+    (
+        '2026-02-01',
+        'Venda cancelada - pagamento via PIX',
+        92.00,
+        4,
+        1,
+        2
+    ),
+    -- Pagamento 5 → Caixa/Banco (débito) → Receita de Vendas (crédito)
+    (
+        '2026-03-20',
+        'Venda realizada - pagamento via crédito',
+        315.00,
+        5,
+        1,
+        2
+    );
 
-INSERT INTO contabil.plano_contas
-(codigo, nome_conta, tipo_conta, natureza_conta)
+  INSERT INTO adm.entrega (
+    stts,
+    data_hora_previsao_entrega,
+    data_hora_entrega,
+    id_venda,
+    rua,
+    numero,
+    bairro,
+    cidade,
+    estado,
+    cep,
+    complemento
+) VALUES
+    -- Venda 1 → Rua das Flores
+    (
+        'entregue',
+        '2026-08-28 14:00:00',
+        '2026-08-28 13:45:00',
+        1,
+        'Rua das Flores',
+        199,
+        'Centro',
+        'Extrema',
+        'MG',
+        '37640-000',
+        'Apto 302'
+    ),
+    -- Venda 2 → Avenida Brasil
+    (
+        'em trânsito',
+        '2026-09-03 16:00:00',
+        NULL,
+        2,
+        'Avenida Brasil',
+        553,
+        'Jardim América',
+        'Extrema',
+        'MG',
+        '37640-010',
+        NULL
+    ),
+    -- Venda 3 → Rua São José
+    (
+        'entregue',
+        '2026-08-29 12:00:00',
+        '2026-08-29 11:50:00',
+        3,
+        'Rua São José',
+        89,
+        'Vila Nova',
+        'Camanducaia',
+        'MG',
+        '37650-000',
+        'Casa 2'
+    ),
+    -- Venda 4 → Rua XV de Novembro
+    (
+        'cancelada',
+        '2026-09-01 15:00:00',
+        NULL,
+        4,
+        'Rua XV de Novembro',
+        500,
+        'Centro',
+        'Itapeva',
+        'SP',
+        '18400-000',
+        NULL
+    ),
+    -- Venda 5 → Rua das Palmeiras
+    (
+        'entregue',
+        '2026-08-30 17:00:00',
+        '2026-08-30 16:40:00',
+        5,
+        'Rua das Palmeiras',
+        10,
+        'Bela Vista',
+        'Extrema',
+        'RJ',
+        '37640-020',
+        'Fundos'
+    );  
+    
+    INSERT INTO site.item (id_carrinho, id_produto, quant)
 VALUES
-('1.1', 'Caixa/Banco', 'ativo', 'devedora'),
-('4.1', 'Receita de Vendas', 'receita', 'credora');
+    -- Carrinho 1 → Produto 1
+    (1, 1, 2),
+    -- Carrinho 2 → Produto 2
+    (2, 2, 1),
+    -- Carrinho 3 → Produto 3
+    (3, 3, 1),
+    -- Carrinho 4 → Produto 4
+    (4, 4, 3),
+    -- Carrinho 5 → Produto 5
+    (5, 5, 2),
+    -- Carrinho 6 → Produto 6
+    (6, 6, 1),
+    -- Carrinho 7 → Produto 7
+    (7, 7, 1),
+    -- Carrinho 8 → Produto 8
+    (8, 8, 2),
+    -- Carrinho 9 → Produto 1
+    (9, 1, 1),
+    -- Carrinho 10 → Produto 2
+    (10, 2, 2);
 
+INSERT INTO site.usuario_endereco (id_usuario, id_endereco, principal)
+VALUES
+    -- Maria Oliveira Santos → Rua das Flores
+    (1, 1, TRUE),
+    -- João Pedro Almeida → Avenida Brasil
+    (2, 2, TRUE),
+    -- Ana Carolina Ferreira → Rua São José
+    (3, 3, TRUE),
+    -- Pedro Henrique Costa → Rua XV de Novembro
+    (4, 4, TRUE),
+    -- Beatriz Souza Lima → Rua das Palmeiras
+    (5, 5, TRUE),
+    -- Karolyne → Rua das Acácias
+    (6, 6, TRUE),
+    -- Gabriel Gomes → Avenida Minas Gerais
+    (7, 7, TRUE),
+    -- Matheus Amaral → Rua Tiradentes
+    (8, 8, TRUE),
+    -- Lara → Rua São Paulo
+    (9, 9, TRUE),
+    -- Camily → Rua dos Ipês
+    (10, 10, TRUE);
 
--- =========================================================
--- AINDA FALTAM (não populadas nesta conversa):
---   site.usuario_endereco  (depende de usuario + endereco)
---   site.carrinho          (depende de usuario + cupom)
---   site.item_carrinho     (depende de carrinho + produto)
---   adm.entrega            (depende de venda + endereco)
---   contabil.plano_contas  (sem FK)
---   contabil.lancamentos   (depende de pagamento + plano_contas)
--- =========================================================
+    INSERT INTO site.item (id_carrinho, id_produto, quant)
+VALUES
+    -- Carrinho 1 → Produto 1
+    (1, 1, 2),
+    -- Carrinho 2 → Produto 2
+    (2, 2, 1),
+    -- Carrinho 3 → Produto 3
+    (3, 3, 1),
+    -- Carrinho 4 → Produto 4
+    (4, 4, 3),
+    -- Carrinho 5 → Produto 5
+    (5, 5, 2),
+    -- Carrinho 6 → Produto 6
+    (6, 6, 1),
+    -- Carrinho 7 → Produto 7
+    (7, 7, 1),
+    -- Carrinho 8 → Produto 8
+    (8, 8, 2),
+    -- Carrinho 9 → Produto 1
+    (9, 1, 1),
+    -- Carrinho 10 → Produto 2
+    (10, 2, 2);
+
+    INSERT INTO contabil.lancamentos (
+    data_lancamento,
+    historico,
+    valor,
+    id_pagamento,
+    conta_debito_id,
+    conta_credito_id
+)
+VALUES
+    -- Pagamento 1 → Caixa/Banco (débito) → Receita de Vendas (crédito)
+    (
+        '2026-01-05',
+        'Venda realizada - pagamento via PIX',
+        110.00,
+        1,
+        1,
+        2
+    ),
+    -- Pagamento 2 → Caixa/Banco (débito) → Receita de Vendas (crédito)
+    (
+        '2026-02-01',
+        'Venda realizada - pagamento aguardando',
+        195.00,
+        2,
+        1,
+        2
+    ),
+    -- Pagamento 3 → Caixa/Banco (débito) → Receita de Vendas (crédito)
+    (
+        '2026-02-10',
+        'Venda realizada - pagamento via débito',
+        120.00,
+        3,
+        1,
+        2
+    ),
+    -- Pagamento 4 → Caixa/Banco (débito) → Receita de Vendas (crédito)
+    (
+        '2026-02-01',
+        'Venda cancelada - pagamento via PIX',
+        92.00,
+        4,
+        1,
+        2
+    ),
+    -- Pagamento 5 → Caixa/Banco (débito) → Receita de Vendas (crédito)
+    (
+        '2026-03-20',
+        'Venda realizada - pagamento via crédito',
+        315.00,
+        5,
+        1,
+        2
+    );
+
+    INSERT INTO contabil.plano_contas (
+    codigo,
+    nome_conta,
+    tipo_conta,
+    natureza_conta
+)
+VALUES
+    ('1.1', 'Caixa/Banco', 'ativo', 'devedora'),
+    ('4.1', 'Receita de Vendas', 'receita', 'credora');

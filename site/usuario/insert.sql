@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 INSERT INTO site.usuario (nome, nome_social, email, senha, cpf, tel, tipo) VALUES
     ('Maria Oliveira Santos', NULL, 'maria.oliveira@email.com', 'senha_hash_123', '123.456.789-01', '(35) 99123-4567', 'cliente'),
     ('João Pedro Almeida', NULL, 'joao.almeida@email.com', 'senha_hash_456', '234.567.890-12', '(35) 98234-5678', 'cliente'),
@@ -9,3 +10,5 @@ INSERT INTO site.usuario (nome, nome_social, email, senha, cpf, tel, tipo) VALUE
     ('Matheus Amaral', NULL, 'matheus.amaral@email.com', 'senha_hash_789', '890.123.749-78', '(35) 92234-5678', 'admin'), 
     ('Lara', NULL, 'lara@email.com', 'senha_hash_789', '890.123.546-78', '(14) 92234-5678', 'admin'),
     ('Camily', NULL, 'camily@email.com', 'senha_hash_459', '890.123.132-78', '(35) 92234-5652', 'admin');
+=======
+
