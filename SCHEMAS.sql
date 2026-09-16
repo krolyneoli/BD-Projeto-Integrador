@@ -1,3 +1,0 @@
-CREATE SCHEMA adm;
-CREATE SCHEMA site;
-CREATE SCHEMA contabil;

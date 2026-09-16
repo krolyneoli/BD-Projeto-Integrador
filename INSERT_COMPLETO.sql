@@ -51,7 +51,7 @@ INSERT INTO site.usuario (nome, nome_social, email, senha, cpf, tel, tipo) VALUE
 -- CUPOM
 -- =========================================================
 
-INSERT INTO adm.cupom (nome, tipo_desconto, valor, data_inicio, data_fim, valor_minimo, ativo) VALUES
+INSERT INTO adm.cupom (nome, tipo_desconto, valor, data_hora_inicio, data_hora_fim, valor_minimo, ativo) VALUES
     ('BEMVINDO10', 'percentual', 10.00, '2026-01-01 00:00:00-03', '2026-12-31 23:59:59-03', 30.00, TRUE),
     ('FRETEGRATIS', 'fixo', 15.00, '2026-03-01 00:00:00-03', '2026-03-31 23:59:59-03', 50.00, TRUE),
     ('PADARIA20', 'percentual', 20.00, '2026-02-01 00:00:00-03', '2026-02-28 23:59:59-03', 0.00, TRUE),
@@ -146,7 +146,7 @@ INSERT INTO adm.item_venda (id_venda, id_produto, quant, preco_unitario, total) 
 -- PAGAMENTO
 -- =========================================================
 
-INSERT INTO adm.pagamento (id_venda, forma, stts, valor, data_pagamento) VALUES
+INSERT INTO adm.pagamento (id_venda, forma, stts, valor, data_hora_pagamento) VALUES
     (1, 'pix', 'pago', 110.00, '2026-01-05 14:30:00-03'),
     (2, 'credito', 'aguardando pagamento', 195.00, NULL),
     (3, 'debito', 'pago', 120.00, '2026-02-10 09:15:00-03'),
@@ -313,7 +313,6 @@ VALUES
     (10, 10, TRUE);
 
 
-
 -- =========================================================
 -- PLANO DE CONTAS
 -- =========================================================
@@ -387,13 +386,13 @@ VALUES
         1,
         2
     );
-
+	
 
 -- =========================================================
 -- CUPONS DO USUÁRIO 
 -- =========================================================
 
-INSERT INTO adm.usuario_cupom (usuario_id, cupom_id)
+INSERT INTO site.usuario_cupom (id_usuario, id_cupom)
 VALUES
     (1, 1), -- Maria → BEMVINDO10
     (2, 2), -- João → FRETEGRATIS
