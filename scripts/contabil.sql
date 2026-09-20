@@ -24,7 +24,7 @@ CREATE TYPE contabil.natureza_conta_enum AS ENUM (
 
 
 -- =========================================================
--- PLANO CONTAS
+-- TABELA DE PLANO DE CONTAS
 -- =========================================================
 
 CREATE TABLE contabil.plano_contas (
@@ -40,7 +40,7 @@ CREATE TABLE contabil.plano_contas (
 
 
 -- =========================================================
--- LANÇAMENTOS
+-- TABELA DE LANÇAMENTOS
 -- =========================================================
 
 CREATE TABLE contabil.lancamentos (
@@ -70,3 +70,79 @@ CREATE TABLE contabil.lancamentos (
     CONSTRAINT ck_lancamento_valor
         CHECK (valor > 0)
 );
+
+
+-- =========================================================
+-- INSERÇÃO DE DADOS NA TABELA DE PLANO DE CONTAS
+-- =========================================================
+
+INSERT INTO contabil.plano_contas (
+    codigo,
+    nome_conta,
+    tipo_conta,
+    natureza_conta
+)
+VALUES
+    ('1.1', 'Caixa/Banco', 'ativo', 'devedora'),
+    ('4.1', 'Receita de Vendas', 'receita', 'credora');
+
+    
+-- =========================================================
+-- INSERÇÃO DE DADOS NA TABELA DE LANÇAMENTOS
+-- =========================================================
+
+INSERT INTO contabil.lancamentos (
+    data_lancamento,
+    historico,
+    valor,
+    id_pagamento,
+    conta_debito_id,
+    conta_credito_id
+)
+VALUES
+    -- Pagamento 1 → Caixa/Banco (débito) → Receita de Vendas (crédito)
+    (
+        '2026-01-05',
+        'Venda realizada - pagamento via PIX',
+        110.00,
+        1,
+        1,
+        2
+    ),
+    -- Pagamento 2 → Caixa/Banco (débito) → Receita de Vendas (crédito)
+    (
+        '2026-02-01',
+        'Venda realizada - pagamento aguardando',
+        195.00,
+        2,
+        1,
+        2
+    ),
+    -- Pagamento 3 → Caixa/Banco (débito) → Receita de Vendas (crédito)
+    (
+        '2026-02-10',
+        'Venda realizada - pagamento via débito',
+        120.00,
+        3,
+        1,
+        2
+    ),
+    -- Pagamento 4 → Caixa/Banco (débito) → Receita de Vendas (crédito)
+    (
+        '2026-02-01',
+        'Venda cancelada - pagamento via PIX',
+        92.00,
+        4,
+        1,
+        2
+    ),
+    -- Pagamento 5 → Caixa/Banco (débito) → Receita de Vendas (crédito)
+    (
+        '2026-03-20',
+        'Venda realizada - pagamento via crédito',
+        315.00,
+        5,
+        1,
+        2
+    );
+	

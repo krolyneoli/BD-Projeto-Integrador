@@ -54,7 +54,7 @@ CREATE TYPE adm.stts_entrega_enum AS ENUM (
 
 
 -- =========================================================
--- FORNECEDOR
+-- TABELA DE FORNECEDOR
 -- =========================================================
 
 CREATE TABLE adm.fornecedor (
@@ -69,12 +69,12 @@ CREATE TABLE adm.fornecedor (
 
     CONSTRAINT fk_fornecedor_endereco
         FOREIGN KEY (id_endereco)
-        REFERENCES site.endereco(id)
+        REFERENCES comum.endereco(id)
 );
 
 
 -- =========================================================
--- CATEGORIA
+-- TABELA DE CATEGORIA
 -- =========================================================
 
 CREATE TABLE adm.categoria (
@@ -84,7 +84,7 @@ CREATE TABLE adm.categoria (
 
 
 -- =========================================================
--- CUPOM
+-- TABELA DE CUPOM
 -- =========================================================
 
 CREATE TABLE adm.cupom (
@@ -116,7 +116,7 @@ CREATE TABLE adm.cupom (
 
 
 -- =========================================================
--- PRODUTO
+-- TABELA DE PRODUTO
 -- =========================================================
 
 CREATE TABLE adm.produto (
@@ -147,7 +147,7 @@ CREATE TABLE adm.produto (
 
 
 -- =========================================================
--- FORNECEDORES DO PRODUTO
+-- TABELA DE FORNECEDORES DO PRODUTO
 -- =========================================================
 
 CREATE TABLE adm.produto_fornecedor (
@@ -167,7 +167,7 @@ CREATE TABLE adm.produto_fornecedor (
 
 
 -- =========================================================
--- ESTOQUE
+-- TABELA DE ESTOQUE
 -- =========================================================
 
 CREATE TABLE adm.estoque (
@@ -191,7 +191,7 @@ CREATE TABLE adm.estoque (
 
 
 -- =========================================================
--- VENDA
+-- TABELA DE VENDA
 -- =========================================================
 
 CREATE TABLE adm.venda (
@@ -208,7 +208,7 @@ CREATE TABLE adm.venda (
 
     CONSTRAINT fk_venda_usuario
         FOREIGN KEY (id_usuario)
-        REFERENCES site.usuario(id),
+        REFERENCES comum.usuario(id),
 
     CONSTRAINT fk_venda_cupom
         FOREIGN KEY (id_cupom)
@@ -229,7 +229,7 @@ CREATE TABLE adm.venda (
 
 
 -- =========================================================
--- ITENS DA VENDA
+-- TABELA DE ITENS DA VENDA
 -- =========================================================
 
 CREATE TABLE adm.item_venda (
@@ -264,7 +264,7 @@ CREATE TABLE adm.item_venda (
 
 
 -- =========================================================
--- PAGAMENTO
+-- TABELA DE PAGAMENTO
 -- =========================================================
 
 CREATE TABLE adm.pagamento (
@@ -285,7 +285,7 @@ CREATE TABLE adm.pagamento (
 
 
 -- =========================================================
--- NOTA FISCAL
+-- TABELA DE NOTA FISCAL
 -- =========================================================
 
 CREATE TABLE adm.nota_fiscal (
@@ -305,7 +305,7 @@ CREATE TABLE adm.nota_fiscal (
 
 
 -- =========================================================
--- ENTREGA
+-- TABELA DE ENTREGA
 -- =========================================================
 
 CREATE TABLE adm.entrega (
@@ -319,7 +319,7 @@ CREATE TABLE adm.entrega (
     numero VARCHAR(100) NOT NULL,
     bairro VARCHAR(100) NOT NULL,
     cidade VARCHAR(100) NOT NULL,
-	estado VARCHAR(100) NOT NULL,
+	estado CHAR(2) NOT NULL,
     cep VARCHAR(9) NOT NULL,
     complemento VARCHAR(100),
 
@@ -333,3 +333,262 @@ CREATE TABLE adm.entrega (
             OR data_hora_entrega >= criado_em
         )
 );
+
+
+-- =========================================================
+-- TABELA DE CUPONS DO USUÁRIO
+-- =========================================================
+
+CREATE TABLE adm.usuario_cupom (
+    id SERIAL PRIMARY KEY,
+    id_usuario INTEGER NOT NULL,
+    id_cupom INTEGER NOT NULL,
+    utilizado_em TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_usuario_cupom_usuario
+        FOREIGN KEY (id_usuario)
+        REFERENCES comum.usuario(id),
+
+    CONSTRAINT fk_usuario_cupom_cupom
+        FOREIGN KEY (id_cupom)
+        REFERENCES adm.cupom(id),
+
+    CONSTRAINT uk_usuario_cupom
+        UNIQUE (id_usuario, id_cupom)
+);
+
+
+-- =========================================================
+-- INSERÇÃO DE DADOS NA TABELA DE FORNECEDOR
+-- =========================================================
+
+INSERT INTO adm.fornecedor (nome, nome_social, nome_fantasia, email, tel, documento, id_endereco) VALUES
+    ('Distribuidora de Farinhas Ltda', NULL, 'FarinhasBR', 'contato@farinhasbr.com', '(35) 3435-1000', '12.345.678/0001-90', 1),
+    ('Laticínios Vale Verde', NULL, 'Vale Verde', 'vendas@valeverde.com', '(35) 3435-2000', '23.456.789/0001-01', 2),
+    ('Chocolates & Cia', NULL, 'ChocoCia', 'comercial@chococia.com', '(35) 3435-3000', '34.567.890/0001-12', 3),
+    ('Embalagens Sul Minas', NULL, 'Sul Minas Embalagens', 'contato@sulminas.com', '(35) 3435-4000', '45.678.901/0001-23', 4);
+
+    
+-- =========================================================
+-- INSERÇÃO DE DADOS NA TABELA DE CATEGORIA
+-- =========================================================
+
+INSERT INTO adm.categoria (nome) VALUES
+    ('Pães'),
+    ('Bolos'),
+    ('Doces'),
+    ('Salgados'),
+    ('Bebidas'),
+    ('Cafés e Chás'),
+    ('Tortas'),
+    ('Biscoitos e Cookies');
+
+
+-- =========================================================
+-- INSERÇÃO DE DADOS NA TABELA DE CUPOM
+-- =========================================================
+
+INSERT INTO adm.cupom (nome, tipo_desconto, valor, data_hora_inicio, data_hora_fim, valor_minimo, ativo) VALUES
+    ('BEMVINDO10', 'percentual', 10.00, '2026-01-01 00:00:00-03', '2026-12-31 23:59:59-03', 30.00, TRUE),
+    ('FRETEGRATIS', 'fixo', 15.00, '2026-03-01 00:00:00-03', '2026-03-31 23:59:59-03', 50.00, TRUE),
+    ('PADARIA20', 'percentual', 20.00, '2026-02-01 00:00:00-03', '2026-02-28 23:59:59-03', 0.00, TRUE),
+    ('BLACKFRIDAY', 'percentual', 50.00, '2026-11-25 00:00:00-03', '2026-11-30 23:59:59-03', 100.00, FALSE),
+    ('DOCE5', 'fixo', 5.00, '2026-01-01 00:00:00-03', '2026-06-30 23:59:59-03', 20.00, TRUE);
+
+
+-- =========================================================
+-- INSERÇÃO DE DADOS NA TABELA DE PRODUTO
+-- =========================================================
+
+INSERT INTO adm.produto (nome, descricao, preco, id_categoria, preco_promocional, ativo) VALUES
+    ('Pão Francês (kg)', 'Pão francês tradicional, crocante por fora e macio por dentro', 18.90, 1, NULL, TRUE),
+    ('Pão de Queijo (dúzia)', 'Pão de queijo mineiro tradicional', 22.00, 1, 19.90, TRUE),
+    ('Bolo de Cenoura com Chocolate', 'Bolo de cenoura com cobertura de chocolate', 35.00, 2, NULL, TRUE),
+    ('Brigadeiro Gourmet (unidade)', 'Brigadeiro artesanal feito com chocolate belga', 4.50, 3, NULL, TRUE),
+    ('Coxinha de Frango', 'Coxinha recheada com frango desfiado', 8.00, 4, 6.90, TRUE),
+    ('Café Expresso', 'Café expresso tradicional', 6.00, 6, NULL, TRUE),
+    ('Torta de Limão', 'Torta de limão com merengue', 45.00, 7, 39.90, TRUE),
+    ('Cookie de Chocolate', 'Cookie artesanal com gotas de chocolate', 7.50, 8, NULL, FALSE);
+
+
+-- =========================================================
+-- INSERÇÃO DE DADOS NA TABELA DE FORNECEDORES DO PRODUTO
+-- =========================================================
+
+INSERT INTO adm.produto_fornecedor (id_produto, id_fornecedor) VALUES
+    (1, 1),
+    (2, 1),
+    (2, 2),
+    (3, 2),
+    (3, 3),
+    (4, 3),
+    (7, 3),
+    (8, 3);
+
+
+-- =========================================================
+-- INSERÇÃO DE DADOS NA TABELA DE ESTOQUE
+-- =========================================================
+
+INSERT INTO adm.estoque (id_produto, quant, stts, valor_atencao) VALUES
+    (1, 150, 'disponivel', 20),
+    (2, 40, 'disponivel', 15),
+    (3, 8, 'atencao', 10),
+    (4, 200, 'disponivel', 30),
+    (5, 3, 'critico', 10),
+    (6, 500, 'disponivel', 50),
+    (7, 0, 'indisponivel', 5),
+    (8, 25, 'disponivel', 10);
+
+
+-- =========================================================
+-- INSERÇÃO DE DADOS NA TABELA DE VENDA
+-- =========================================================
+
+INSERT INTO adm.venda (id_usuario, id_cupom, subtotal, valor_desconto, valor_frete, total, stts_pagamento, stts) VALUES
+    (1, NULL, 100.00, 0.00,  10.00, 110.00, 'pago', 'concluída'),
+    (2, 1, 200.00, 20.00, 15.00, 195.00, 'aguardando pagamento', 'em preparação'),
+    (3, 3, 150.00, 30.00, 0.00,  120.00, 'pago', 'concluída'),
+    (1, NULL, 80.00,  0.00,  12.00, 92.00,  'aguardando pagamento', 'cancelada'),
+    (5, 5, 300.00, 5.00,  20.00, 315.00, 'pago', 'concluída');
+
+
+-- =========================================================
+-- INSERÇÃO DE DADOS NA TABELA DE ITENS DA VENDA
+-- =========================================================
+
+INSERT INTO adm.item_venda (id_venda, id_produto, quant, preco_unitario, total) VALUES
+    (1, 1, 5, 18.90, 94.50),
+    (1, 2, 1, 19.90, 19.90),
+    (2, 3, 2, 35.00, 70.00),
+    (2, 6, 3, 6.00, 18.00),
+    (3, 4, 10, 4.50, 45.00),
+    (3, 7, 1, 39.90, 39.90),
+    (4, 5, 4, 6.90, 27.60),
+    (5, 8, 6, 7.50, 45.00);
+
+
+-- =========================================================
+-- INSERÇÃO DE DADOS NA TABELA DE PAGAMENTO
+-- =========================================================
+
+INSERT INTO adm.pagamento (id_venda, forma, stts, valor, data_hora_pagamento) VALUES
+    (1, 'pix', 'pago', 110.00, '2026-01-05 14:30:00-03'),
+    (2, 'credito', 'aguardando pagamento', 195.00, NULL),
+    (3, 'debito', 'pago', 120.00, '2026-02-10 09:15:00-03'),
+    (4, 'pix', 'cancelado', 92.00, NULL),
+    (5, 'credito', 'pago', 315.00, '2026-03-20 18:45:00-03');
+
+
+-- =========================================================
+-- INSERÇÃO DE DADOS NA TABELA DE NOTA FISCAL
+-- =========================================================
+
+INSERT INTO adm.nota_fiscal (numero_nota, valor, id_venda) VALUES
+    ('000000001', 110.00, 1),
+    ('000000002', 195.00, 2),
+    ('000000003', 120.00, 3),
+    ('000000004', 92.00, 4),
+    ('000000005', 315.00, 5);
+
+
+-- =========================================================
+-- INSERÇÃO DE DADOS NA TABELA DE ENTREGA
+-- =========================================================
+
+INSERT INTO adm.entrega (
+    stts,
+    data_hora_previsao_entrega,
+    data_hora_entrega,
+    id_venda,
+    rua,
+    numero,
+    bairro,
+    cidade,
+    estado,
+    cep,
+    complemento
+) VALUES
+    (
+        'entregue',
+        '2026-09-28 14:00:00',
+        '2026-09-28 13:45:00',
+        1,
+        'Rua das Flores',
+        199,
+        'Centro',
+        'Extrema',
+        'MG',
+        '37640-000',
+        'Apto 302'
+    ),
+    (
+        'em transporte',
+        '2026-09-03 16:00:00',
+        NULL,
+        2,
+        'Avenida Brasil',
+        553,
+        'Jardim América',
+        'Extrema',
+        'MG',
+        '37640-010',
+        NULL
+    ),
+    (
+        'entregue',
+        '2026-09-29 12:00:00',
+        '2026-09-29 11:50:00',
+        3,
+        'Rua São José',
+        89,
+        'Vila Nova',
+        'Camanducaia',
+        'MG',
+        '37650-000',
+        'Casa 2'
+    ),
+    (
+        'cancelada',
+        '2026-09-05 15:00:00',
+        NULL,
+        4,
+        'Rua XV de Novembro',
+        500,
+        'Centro',
+        'Itapeva',
+        'SP',
+        '18400-000',
+        NULL
+    ),
+    (
+        'entregue',
+        '2026-09-30 17:00:00',
+        '2026-09-30 16:40:00',
+        5,
+        'Rua das Palmeiras',
+        10,
+        'Bela Vista',
+        'Extrema',
+        'RJ',
+        '37640-020',
+        'Fundos'
+    );  
+
+
+-- =========================================================
+-- INSERÇÃO DE DADOS NA TABELA DE CUPONS DO USUÁRIO 
+-- =========================================================
+
+INSERT INTO adm.usuario_cupom (id_usuario, id_cupom)
+VALUES
+    (1, 1), -- Maria → BEMVINDO10
+    (2, 2), -- João → FRETEGRATIS
+    (3, 3), -- Ana → PADARIA20
+    (4, 1), -- Pedro → BEMVINDO10
+    (5, 2), -- Beatriz → FRETEGRATIS
+    (6, 4), -- Karolyne → BLACKFRIDAY
+    (7, 5), -- Gabriel → DOCE5
+    (8, 1), -- Matheus → BEMVINDO10
+    (9, 3), -- Lara → PADARIA20
+    (10, 5); -- Camily → DOCE5

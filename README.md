@@ -2,41 +2,72 @@
 
 ## Banco de Dados do Projeto Integrador
 
-Este repositório reúne o script SQL do banco de dados desenvolvido para o ecommerce da **Padaria Artesanal Delícias**. A proposta do modelo é representar, de forma organizada e consistente, os principais processos de uma aplicação comercial, contemplando cadastro de usuários, gestão de produtos, controle de estoque, carrinho de compras, vendas, pagamentos e entregas.
+Este repositório reúne os scripts SQL do banco de dados desenvolvido para o ecommerce da **Padaria Artesanal Delícias**. O modelo representa os principais processos de uma aplicação comercial, contemplando cadastro de usuários, gestão de produtos, controle de estoque, carrinho de compras, vendas, pagamentos, entregas e lançamentos contábeis.
 
 ## Objetivo
 
-O objetivo deste banco de dados é fornecer uma estrutura relacional capaz de sustentar as operações essenciais de um ecommerce, preservando integridade, rastreabilidade e padronização dos dados. O projeto foi elaborado com foco acadêmico, servindo como base para demonstração de modelagem, normalização e aplicação de restrições de integridade em PostgreSQL.
+O banco de dados foi criado para sustentar as operações essenciais de um ecommerce, preservando integridade, rastreabilidade e padronização dos dados. O projeto também serve como base acadêmica para demonstração de modelagem relacional, normalização e uso de restrições de integridade no PostgreSQL.
 
-## Escopo do sistema
+## Estrutura do projeto
 
-A solução foi organizada em três schemas, cada um responsável por um conjunto específico de informações:
+O modelo está organizado em quatro schemas:
 
-- `site`: dados relacionados ao cliente e às funcionalidades de navegação e compra.
+- `comum`: dados compartilhados que não têm um dono único.
 - `adm`: dados operacionais e comerciais do ecommerce.
-- `contabil`: estrutura destinada ao controle contábil e aos lançamentos financeiros.
+- `site`: funcionalidades de navegação e compra.
+- `contabil`: controle contábil e lançamentos financeiros.
 
-O script principal do projeto está concentrado em `CREATE_COMPLETO.sql`, que reúne a definição dos schemas, enums, tabelas, chaves primárias, chaves estrangeiras e demais restrições. Juntamente do `INSERT_COMPLETO.sql` que faz todas as devidas inserções nas tabelas criadas.
+Os arquivos principais ficam em `scripts/`:
+
+- `comum.sql`
+- `adm.sql`
+- `site.sql`
+- `contabil.sql`
+
+Cada script já contém a criação dos objetos e as inserções de dados correspondentes ao seu schema.
+
+### Regra de dependência
+
+As dependências vão sempre em uma direção, sem ciclos. O `comum` é a base e não referencia nenhum outro schema. Cada dado fica no schema de quem o gerencia: o `adm` é dono do catálogo e das vendas, e o `site` apenas consome. Isso permite criar as tabelas em ordem (`comum` → `adm` → `site` e `contabil`) e conceder permissões por schema.
+
+## Passo a passo para executar
+
+1. Instale e abra o **PostgreSQL**.
+2. Crie um banco de dados vazio para o projeto.
+3. Execute os scripts nesta ordem, porque há dependências entre os schemas:
+   1. `scripts/comum.sql`
+   2. `scripts/adm.sql`
+   3. `scripts/site.sql`
+   4. `scripts/contabil.sql`
+4. Verifique se todos os comandos foram executados sem erro.
+
+Se preferir executar pelo terminal com `psql`, o fluxo fica assim:
+
+```bash
+psql -U seu_usuario -d seu_banco -f scripts/comum.sql
+psql -U seu_usuario -d seu_banco -f scripts/adm.sql
+psql -U seu_usuario -d seu_banco -f scripts/site.sql
+psql -U seu_usuario -d seu_banco -f scripts/contabil.sql
+```
+
+## Observação importante
+
+Os scripts criam schemas, tipos e tabelas sem usar `IF NOT EXISTS`. Por isso, o ideal é executá-los em um banco limpo ou remover os objetos anteriores antes de rodar novamente.
 
 ## Organização lógica do banco
 
-### Schema `site`
-
-O schema `site` contempla as entidades ligadas ao usuário e ao processo de compra.
+### Schema `comum`
 
 - `endereco`: armazena os dados de localização.
 - `usuario`: registra clientes e administradores.
 - `usuario_endereco`: estabelece a relação entre usuários e endereços.
-- `carrinho`: representa o carrinho associado ao usuário.
-- `item`: registra os produtos adicionados ao carrinho.
 
 ### Schema `adm`
-
-O schema `adm` concentra as entidades responsáveis pela operação comercial.
 
 - `fornecedor`: cadastro de fornecedores.
 - `categoria`: classificação dos produtos.
 - `cupom`: cupons promocionais e regras de desconto.
+- `usuario_cupom`: controle de uso de cupom por cliente.
 - `produto`: catálogo de produtos da padaria.
 - `produto_fornecedor`: relacionamento entre produtos e fornecedores.
 - `estoque`: controle quantitativo e situacional dos produtos.
@@ -46,9 +77,12 @@ O schema `adm` concentra as entidades responsáveis pela operação comercial.
 - `nota_fiscal`: emissão e vinculação da nota fiscal.
 - `entrega`: dados logísticos e endereço de entrega.
 
-### Schema `contabil`
+### Schema `site`
 
-O schema `contabil` contempla o arquivo .sql do trabalho 1 entregue pelo professor adaptado para o nosso projeto integrador.
+- `carrinho`: representa o carrinho associado ao usuário.
+- `item`: registra os produtos adicionados ao carrinho.
+
+### Schema `contabil`
 
 - `plano_contas`: estrutura de classificação contábil.
 - `lancamentos`: registros de débitos e créditos.
@@ -99,12 +133,8 @@ O script foi desenvolvido para **PostgreSQL**, utilizando recursos como schemas,
 
 ## Estrutura dos arquivos
 
-- `CREATE_COMPLETO.sql`: script de criação consolidado do banco de dados.
-- `INSERT_COMPLETO.sql`: script de inserção das tabelas do banco de dados.
-- `SCHEMAS.sql`: criação isolada dos schemas.
-- `adm/`: scripts do módulo administrativo.
-- `site/`: scripts do módulo do site e do cliente.
-- `contabil/`: scripts do módulo contábil passados pelo professor.
+- `docs/`: diagramas lógicos dos schemas `adm`, `comum`, `contabil` e `site`.
+- `scripts/`: scripts de criação das tabelas e inserção de dados dos schemas `adm`, `comum`, `contabil` e `site`.
 
 ## Considerações finais
 
