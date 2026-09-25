@@ -67,9 +67,13 @@ CREATE TABLE adm.fornecedor (
     documento VARCHAR(18) NOT NULL UNIQUE,
     id_endereco INTEGER NOT NULL,
 
+    CONSTRAINT chk_fornecedor_tel
+        CHECK (length(tel) >= 10),
+
     CONSTRAINT fk_fornecedor_endereco
         FOREIGN KEY (id_endereco)
         REFERENCES comum.endereco(id)
+        ON DELETE RESTRICT
 );
 
 
@@ -158,11 +162,13 @@ CREATE TABLE adm.produto_fornecedor (
 
     CONSTRAINT fk_produto_fornecedor_produto
         FOREIGN KEY (id_produto)
-        REFERENCES adm.produto(id),
+        REFERENCES adm.produto(id)
+        ON DELETE CASCADE,
 
     CONSTRAINT fk_produto_fornecedor_fornecedor
         FOREIGN KEY (id_fornecedor)
         REFERENCES adm.fornecedor(id)
+        ON DELETE CASCADE
 );
 
 
@@ -180,7 +186,9 @@ CREATE TABLE adm.estoque (
 
     CONSTRAINT fk_estoque_produto
         FOREIGN KEY (id_produto)
-        REFERENCES adm.produto(id),
+        REFERENCES adm.produto(id)
+         ON DELETE CASCADE
+         ON UPDATE CASCADE,
 
     CONSTRAINT ck_estoque_quant
         CHECK (quant >= 0),
@@ -208,11 +216,13 @@ CREATE TABLE adm.venda (
 
     CONSTRAINT fk_venda_usuario
         FOREIGN KEY (id_usuario)
-        REFERENCES comum.usuario(id),
+        REFERENCES comum.usuario(id)
+        ON DELETE RESTRICT,
 
     CONSTRAINT fk_venda_cupom
         FOREIGN KEY (id_cupom)
-        REFERENCES adm.cupom(id),
+        REFERENCES adm.cupom(id)
+        ON DELETE CASCADE,
 
     CONSTRAINT ck_venda_subtotal
         CHECK (subtotal >= 0),
@@ -277,10 +287,12 @@ CREATE TABLE adm.pagamento (
 
     CONSTRAINT fk_pagamento_venda
         FOREIGN KEY (id_venda)
-        REFERENCES adm.venda(id),
+        REFERENCES adm.venda(id)
+        ON DELETE CASCADE,
 
     CONSTRAINT ck_pagamento_valor
         CHECK (valor >= 0)
+        
 );
 
 
@@ -297,7 +309,8 @@ CREATE TABLE adm.nota_fiscal (
 
     CONSTRAINT fk_nota_fiscal_venda
         FOREIGN KEY (id_venda)
-        REFERENCES adm.venda(id),
+        REFERENCES adm.venda(id)
+        ON DELETE RESTRICT,
 
     CONSTRAINT ck_nota_fiscal_valor
         CHECK (valor >= 0)
@@ -325,7 +338,8 @@ CREATE TABLE adm.entrega (
 
     CONSTRAINT fk_entrega_venda
         FOREIGN KEY (id_venda)
-        REFERENCES adm.venda(id),
+        REFERENCES adm.venda(id)
+         ON DELETE RESTRICT,
 
     CONSTRAINT ck_entrega_data_hora_entrega
         CHECK (
@@ -347,11 +361,13 @@ CREATE TABLE adm.usuario_cupom (
 
     CONSTRAINT fk_usuario_cupom_usuario
         FOREIGN KEY (id_usuario)
-        REFERENCES comum.usuario(id),
+        REFERENCES comum.usuario(id)
+        ON DELETE RESTRICT,
 
     CONSTRAINT fk_usuario_cupom_cupom
         FOREIGN KEY (id_cupom)
-        REFERENCES adm.cupom(id),
+        REFERENCES adm.cupom(id)
+        ON DELETE RESTRICT,
 
     CONSTRAINT uk_usuario_cupom
         UNIQUE (id_usuario, id_cupom)

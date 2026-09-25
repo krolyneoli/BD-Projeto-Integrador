@@ -16,11 +16,13 @@ CREATE TABLE site.carrinho (
 
     CONSTRAINT fk_carrinho_usuario
         FOREIGN KEY (id_usuario)
-        REFERENCES comum.usuario(id),
+        REFERENCES comum.usuario(id)
+        ON DELETE CASCADE,
 
     CONSTRAINT fk_carrinho_cupom
         FOREIGN KEY (id_cupom)
         REFERENCES adm.cupom(id)
+        ON DELETE SET NULL
 );
 
 
@@ -41,7 +43,8 @@ CREATE TABLE site.item (
 
     CONSTRAINT fk_item_produto
         FOREIGN KEY (id_produto)
-        REFERENCES adm.produto(id),
+        REFERENCES adm.produto(id)
+        ON DELETE RESTRICT,
 
     CONSTRAINT ck_item_quant
         CHECK (quant > 0),

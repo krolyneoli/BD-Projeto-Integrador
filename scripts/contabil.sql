@@ -57,15 +57,18 @@ CREATE TABLE contabil.lancamentos (
 
     CONSTRAINT fk_lancamento_pagamento
         FOREIGN KEY (id_pagamento)
-        REFERENCES adm.pagamento(id),
+        REFERENCES adm.pagamento(id)
+        ON DELETE RESTRICT,
 
     CONSTRAINT fk_conta_debito
         FOREIGN KEY (conta_debito_id)
-        REFERENCES contabil.plano_contas(id),
+        REFERENCES contabil.plano_contas(id)
+        ON DELETE RESTRICT,
 
     CONSTRAINT fk_conta_credito
         FOREIGN KEY (conta_credito_id)
-        REFERENCES contabil.plano_contas(id),
+        REFERENCES contabil.plano_contas(id)
+        ON DELETE RESTRICT,
 
     CONSTRAINT ck_lancamento_valor
         CHECK (valor > 0)
