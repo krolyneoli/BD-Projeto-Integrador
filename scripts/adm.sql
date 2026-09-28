@@ -96,7 +96,7 @@ CREATE TABLE adm.cupom (
         CHECK (valor_minimo >= 0),
 
     CONSTRAINT ck_cupom_data_hora_fim_data_hora_inicio
-        CHECK (data_hora_fim > data_hora_inicio)
+        CHECK (data_hora_fim > data_hora_inicio),
 
         CONSTRAINT ck_cupom_nome
     CHECK (length(trim(nome)) > 0)

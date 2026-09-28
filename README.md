@@ -14,7 +14,7 @@ O modelo está organizado em quatro schemas:
 
 - `comum`: dados compartilhados que não têm um dono único.
 - `adm`: dados operacionais e comerciais do ecommerce.
-- `site`: funcionalidades de navegação e compra.
+- `site`: funcionalidades de navegação    e compra.
 - `contabil`: controle contábil e lançamentos financeiros.
 
 Os arquivos principais ficam em `scripts/`:
