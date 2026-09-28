@@ -29,7 +29,7 @@ CREATE TYPE contabil.natureza_conta_enum AS ENUM (
 
 CREATE TABLE contabil.plano_contas (
     id SERIAL,
-    codigo VARCHAR(40) NOT NULL,
+    codigo VARCHAR(40) NOT NULL UNIQUE,
     nome_conta VARCHAR(255) NOT NULL,
     tipo_conta contabil.tipo_conta_enum NOT NULL,
     natureza_conta contabil.natureza_conta_enum NOT NULL DEFAULT 'devedora',
@@ -49,8 +49,8 @@ CREATE TABLE contabil.lancamentos (
     historico VARCHAR(255),
     valor DECIMAL(15,2) NOT NULL,
     id_pagamento INTEGER,
-    conta_debito_id INTEGER,
-    conta_credito_id INTEGER,
+    conta_debito_id INTEGER NOT NULL,
+    conta_credito_id INTEGER NOT NULL,
 
     CONSTRAINT pk_lancamentos
         PRIMARY KEY (id),
