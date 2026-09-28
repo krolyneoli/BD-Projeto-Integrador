@@ -66,3 +66,6 @@ SELECT
 FROM contabil.lancamentos l
 INNER JOIN adm.pagamento p
     ON l.id_pagamento = p.id;
+
+
+    
