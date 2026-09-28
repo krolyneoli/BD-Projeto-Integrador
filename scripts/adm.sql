@@ -57,25 +57,6 @@ CREATE TYPE adm.stts_entrega_enum AS ENUM (
 -- TABELA DE FORNECEDOR
 -- =========================================================
 
-CREATE TABLE adm.fornecedor (
-    id SERIAL PRIMARY KEY,
-    nome VARCHAR(255) NOT NULL,
-    nome_social VARCHAR(255),
-    nome_fantasia VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL,
-    tel VARCHAR(20) NOT NULL,
-    documento VARCHAR(18) NOT NULL UNIQUE,
-    id_endereco INTEGER NOT NULL,
-
-    CONSTRAINT chk_fornecedor_tel
-        CHECK (length(tel) >= 10),
-
-    CONSTRAINT fk_fornecedor_endereco
-        FOREIGN KEY (id_endereco)
-        REFERENCES comum.endereco(id)
-        ON DELETE RESTRICT
-);
-
 
 -- =========================================================
 -- TABELA DE CATEGORIA
@@ -116,6 +97,9 @@ CREATE TABLE adm.cupom (
 
     CONSTRAINT ck_cupom_data_hora_fim_data_hora_inicio
         CHECK (data_hora_fim > data_hora_inicio)
+
+        CONSTRAINT ck_cupom_nome
+    CHECK (length(trim(nome)) > 0)
 );
 
 
@@ -187,8 +171,7 @@ CREATE TABLE adm.estoque (
     CONSTRAINT fk_estoque_produto
         FOREIGN KEY (id_produto)
         REFERENCES adm.produto(id)
-         ON DELETE CASCADE
-         ON UPDATE CASCADE,
+         ON DELETE CASCADE,
 
     CONSTRAINT ck_estoque_quant
         CHECK (quant >= 0),
@@ -222,7 +205,7 @@ CREATE TABLE adm.venda (
     CONSTRAINT fk_venda_cupom
         FOREIGN KEY (id_cupom)
         REFERENCES adm.cupom(id)
-        ON DELETE CASCADE,
+        ON DELETE SET NULL,
 
     CONSTRAINT ck_venda_subtotal
         CHECK (subtotal >= 0),
@@ -257,7 +240,8 @@ CREATE TABLE adm.item_venda (
 
     CONSTRAINT fk_item_venda_produto
         FOREIGN KEY (id_produto)
-        REFERENCES adm.produto(id),
+        REFERENCES adm.produto(id)
+        ON DELETE RESTRICT,
 
     CONSTRAINT uk_item_venda_produto
         UNIQUE (id_venda, id_produto),
@@ -346,6 +330,12 @@ CREATE TABLE adm.entrega (
             data_hora_entrega IS NULL
             OR data_hora_entrega >= criado_em
         )
+
+        CONSTRAINT ck_entrega_previsao
+    CHECK (data_hora_previsao_entrega >= criado_em),
+
+CONSTRAINT ck_entrega_estado
+    CHECK (estado = UPPER(estado))
 );
 
 
