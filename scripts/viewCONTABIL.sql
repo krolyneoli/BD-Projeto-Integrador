@@ -17,7 +17,6 @@ SELECT
 FROM contabil.plano_contas;
 
 
-
 -- =========================================================
 -- Contas de ativo
 -- =========================================================
@@ -32,11 +31,10 @@ FROM contabil.plano_contas
 WHERE tipo_conta = 'ativo';
 
 
-
-
 -- =========================================================
 -- Lançamentos por data
 -- =========================================================
+
 CREATE OR REPLACE VIEW contabil.vw_lancamentos_2026 AS
 SELECT
     id,
@@ -49,11 +47,10 @@ WHERE data_lancamento >= '2026-01-01'
   AND data_lancamento < '2027-01-01';
 
 
-
-
 -- =========================================================
 -- Lançamentos com pagamento
 -- =========================================================
+
   CREATE OR REPLACE VIEW contabil.vw_lancamentos_pagamentos AS
 SELECT
     l.id AS id_lancamento,
@@ -66,6 +63,3 @@ SELECT
 FROM contabil.lancamentos l
 INNER JOIN adm.pagamento p
     ON l.id_pagamento = p.id;
-
-
-    

@@ -3,15 +3,15 @@
 -- =========================================================
 -- =========================================================
 -- comando para testar VIEW: 
--- SELECT * FROM adm.(nome da view);
+-- SELECT * FROM tabela.(nome da view);
 --EX: SELECT * FROM adm.vw_produtos_ativos;
 -- =========================================================
-
 
 
 -- =========================================================
 -- PRODUTOS ATIVOS
 -- =========================================================
+
 CREATE OR REPLACE VIEW adm.vw_produtos_ativos AS
 SELECT
     id,
@@ -23,10 +23,10 @@ FROM adm.produto
 WHERE ativo = TRUE;
 
 
+-- =========================================================
+-- CATEGORIAS E SEUS PRODUTOS
+-- =========================================================
 
--- =========================================================
--- Categorias e seus produtos
--- =========================================================
 CREATE OR REPLACE VIEW adm.vw_categorias_produtos AS
 SELECT
     p.id AS id_produto,
@@ -40,8 +40,9 @@ INNER JOIN adm.categoria c
 
 
 -- =========================================================
--- Produtos e estoques
--- ========================================================
+-- PRODUTOS E ESTOQUES
+-- =========================================================
+
 CREATE OR REPLACE VIEW adm.vw_produtos_estoque AS
 SELECT
     p.id AS id_produto,
@@ -55,10 +56,10 @@ INNER JOIN adm.estoque e
     ON p.id = e.id_produto;
 
 
-
 -- =========================================================
--- Fornecedores e seus produtos
--- ========================================================
+-- FORNECEDORES E SEUS PRODUTOS
+-- =========================================================
+
 CREATE OR REPLACE VIEW adm.vw_fornecedores_produtos AS
 SELECT
     p.id AS id_produto,
@@ -74,10 +75,10 @@ INNER JOIN adm.fornecedor f
     ON pf.id_fornecedor = f.id;
 
 
-
 -- =========================================================
--- Pagamentos daas vendas
--- ========================================================
+-- PAGAMENTOS DAS VENDAS
+-- =========================================================
+
 CREATE OR REPLACE VIEW adm.vw_pagamentos_vendas AS
 SELECT
     p.id AS id_pagamento,
@@ -92,3 +93,4 @@ SELECT
 FROM adm.pagamento p
 INNER JOIN adm.venda v
     ON p.id_venda = v.id;
+    

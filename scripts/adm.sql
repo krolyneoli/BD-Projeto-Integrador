@@ -57,6 +57,25 @@ CREATE TYPE adm.stts_entrega_enum AS ENUM (
 -- TABELA DE FORNECEDOR
 -- =========================================================
 
+CREATE TABLE adm.fornecedor (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    nome_social VARCHAR(255),
+    nome_fantasia VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    tel VARCHAR(20) NOT NULL,
+    documento VARCHAR(18) NOT NULL UNIQUE,
+    id_endereco INTEGER NOT NULL,
+
+    CONSTRAINT chk_fornecedor_tel
+        CHECK (length(tel) >= 10),
+
+    CONSTRAINT fk_fornecedor_endereco
+        FOREIGN KEY (id_endereco)
+        REFERENCES comum.endereco(id)
+        ON DELETE RESTRICT
+);
+
 
 -- =========================================================
 -- TABELA DE CATEGORIA
@@ -329,13 +348,13 @@ CREATE TABLE adm.entrega (
         CHECK (
             data_hora_entrega IS NULL
             OR data_hora_entrega >= criado_em
-        )
+        ),
 
-        CONSTRAINT ck_entrega_previsao
-    CHECK (data_hora_previsao_entrega >= criado_em),
+    CONSTRAINT ck_entrega_previsao
+        CHECK (data_hora_previsao_entrega >= criado_em),
 
-CONSTRAINT ck_entrega_estado
-    CHECK (estado = UPPER(estado))
+    CONSTRAINT ck_entrega_estado
+        CHECK (estado = UPPER(estado))
 );
 
 
@@ -517,8 +536,8 @@ INSERT INTO adm.entrega (
 ) VALUES
     (
         'entregue',
-        '2026-09-28 14:00:00',
-        '2026-09-28 13:45:00',
+        '2026-12-28 14:00:00',
+        '2026-12-28 13:45:00',
         1,
         'Rua das Flores',
         199,
@@ -530,7 +549,7 @@ INSERT INTO adm.entrega (
     ),
     (
         'em transporte',
-        '2026-09-03 16:00:00',
+        '2026-12-03 16:00:00',
         NULL,
         2,
         'Avenida Brasil',
@@ -543,8 +562,8 @@ INSERT INTO adm.entrega (
     ),
     (
         'entregue',
-        '2026-09-29 12:00:00',
-        '2026-09-29 11:50:00',
+        '2026-12-29 12:00:00',
+        '2026-12-29 11:50:00',
         3,
         'Rua São José',
         89,
@@ -556,7 +575,7 @@ INSERT INTO adm.entrega (
     ),
     (
         'cancelada',
-        '2026-09-05 15:00:00',
+        '2026-12-05 15:00:00',
         NULL,
         4,
         'Rua XV de Novembro',
@@ -569,8 +588,8 @@ INSERT INTO adm.entrega (
     ),
     (
         'entregue',
-        '2026-09-30 17:00:00',
-        '2026-09-30 16:40:00',
+        '2026-12-30 17:00:00',
+        '2026-12-30 16:40:00',
         5,
         'Rua das Palmeiras',
         10,

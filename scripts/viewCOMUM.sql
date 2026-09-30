@@ -6,6 +6,7 @@
 -- =========================================================
 -- Usuários clientes
 -- =========================================================
+
 CREATE OR REPLACE VIEW comum.vw_usuarios_clientes AS
 SELECT
     id,
@@ -19,10 +20,10 @@ FROM comum.usuario
 WHERE tipo = 'cliente';
 
 
-
 -- =========================================================
 -- Usuários admin 
 -- =========================================================
+
 CREATE OR REPLACE VIEW comum.vw_usuarios_admin AS
 SELECT
     id,
@@ -35,10 +36,10 @@ FROM comum.usuario
 WHERE tipo = 'admin';
 
 
-
 -- =========================================================
 -- usuários e seus endereços
 -- =========================================================
+
 CREATE OR REPLACE VIEW comum.vw_enderecos_principais AS
 SELECT
     ue.id_usuario,
@@ -72,10 +73,10 @@ SELECT
 FROM comum.usuario;
 
 
-
 -- =========================================================
 -- Endereços de Minas Gerais, puxado pelo "MG"
 -- =========================================================
+
 CREATE OR REPLACE VIEW comum.vw_enderecos_mg AS
 SELECT
     id,

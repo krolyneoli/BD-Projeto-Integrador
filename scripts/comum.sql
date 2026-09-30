@@ -28,7 +28,7 @@ CREATE TABLE comum.usuario (
     cpf VARCHAR(14) NOT NULL UNIQUE,
     tel VARCHAR(20) NOT NULL,
     tipo comum.tipo_usuario_enum NOT NULL DEFAULT 'cliente',
-    criado_em TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+    criado_em TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT ck_usuario_tel
         CHECK (length(tel) >= 10)
@@ -47,7 +47,7 @@ CREATE TABLE comum.endereco (
     cidade VARCHAR(100) NOT NULL,
     estado CHAR(2) NOT NULL,
     cep VARCHAR(9) NOT NULL,
-    complemento VARCHAR(100)
+    complemento VARCHAR(100),
 
     CONSTRAINT ck_endereco_estado
         CHECK (estado = UPPER(estado))

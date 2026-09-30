@@ -14,7 +14,7 @@ O modelo está organizado em quatro schemas:
 
 - `comum`: dados compartilhados que não têm um dono único.
 - `adm`: dados operacionais e comerciais do ecommerce.
-- `site`: funcionalidades de navegação    e compra.
+- `site`: funcionalidades de navegação e compra.
 - `contabil`: controle contábil e lançamentos financeiros.
 
 Os arquivos principais ficam em `scripts/`:
@@ -23,6 +23,10 @@ Os arquivos principais ficam em `scripts/`:
 - `adm.sql`
 - `site.sql`
 - `contabil.sql`
+- `viewADM.sql`
+- `viewCOMUM.sql`
+- `viewCONTABIL.sql`
+- `viewSITE.sql`
 
 Cada script já contém a criação dos objetos e as inserções de dados correspondentes ao seu schema.
 
@@ -39,6 +43,10 @@ As dependências vão sempre em uma direção, sem ciclos. O `comum` é a base e
    2. `scripts/adm.sql`
    3. `scripts/site.sql`
    4. `scripts/contabil.sql`
+   5. `scripts/viewADM.sql`
+   6. `scripts/viewCOMUM.sql`
+   7. `scripts/viewCONTABIL.sql`
+   8. `scripts/viewSITE.sql`
 4. Verifique se todos os comandos foram executados sem erro.
 
 Se preferir executar pelo terminal com `psql`, o fluxo fica assim:
@@ -48,6 +56,10 @@ psql -U seu_usuario -d seu_banco -f scripts/comum.sql
 psql -U seu_usuario -d seu_banco -f scripts/adm.sql
 psql -U seu_usuario -d seu_banco -f scripts/site.sql
 psql -U seu_usuario -d seu_banco -f scripts/contabil.sql
+psql -U seu_usuario -d seu_banco -f scripts/viewADM.sql
+psql -U seu_usuario -d seu_banco -f scripts/viewCOMUM.sql
+psql -U seu_usuario -d seu_banco -f scripts/viewCONTABIL.sql
+psql -U seu_usuario -d seu_banco -f scripts/viewSITE.sql
 ```
 
 ## Observação importante
