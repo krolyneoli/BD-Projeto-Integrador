@@ -132,9 +132,6 @@ VALUES
 -- PRÁTICA 05 - TRIGGER E FUNÇÃO DE BANCO
 -- =========================================================
 
--- 1. Coluna valor: já criada em contabil.lancamentos como
---    NUMERIC(14,2) com CHECK (valor > 0) (ck_lancamento_valor).
-
 -- 2. Tabela de saldos por conta
 CREATE TABLE contabil.saldo_contas (
     id SERIAL,
@@ -253,7 +250,7 @@ INNER JOIN contabil.saldo_contas sc
     ON sc.conta_id = pc.id
 GROUP BY pc.natureza_conta;
 
--- Por que os dois totais são iguais (R$ 39.000,00)?
+-- 8. Por que os dois totais são iguais (R$ 39.000,00)?
 -- Pelo método das partidas dobradas, todo lançamento debita uma conta e
 -- credita outra pelo mesmo valor. Uma conta devedora sobe quando debitada
 -- e uma credora sobe quando creditada; ou seja, cada lançamento soma o
