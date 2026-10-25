@@ -98,6 +98,7 @@ Os scripts criam schemas, tipos e tabelas sem usar `IF NOT EXISTS`. Por isso, o 
 
 - `plano_contas`: estrutura de classificação contábil.
 - `lancamentos`: registros de débitos e créditos.
+- `saldo_contas`: saldo atual de cada conta, atualizado automaticamente pelo trigger `trg_atualiza_saldo` (função `contabil.fn_atualiza_saldo()`) a cada lançamento inserido, conforme a natureza (devedora/credora) da conta.
 
 ## Tipos enumerados
 
