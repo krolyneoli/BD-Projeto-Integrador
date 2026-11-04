@@ -139,6 +139,8 @@ CREATE TABLE contabil.saldo_contas (
     saldo NUMERIC(14,2) NOT NULL DEFAULT 0,
     data_atualizacao TIMESTAMP NOT NULL DEFAULT now(),
 
+    CONSTRAINT uq_saldo_conta UNIQUE (conta_id),
+
     CONSTRAINT pk_saldo_contas
         PRIMARY KEY (id),
 
